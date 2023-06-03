@@ -13,16 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function () { return view('welcome'); });
+
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
+
+    // Route::get('/users', ShowPosts::class)->name('users');
+    // Route::get('/user/{user}', ShowPosts::class)->name('users');
+
+    // Route::get('/events', ShowPosts::class)->name('event');
+    // Route::get('/event/{event}', ShowPosts::class)->name('event.show');
+    // Route::get('/event/{event}/schedule', ShowPosts::class)->name('event.schedule');
 });
