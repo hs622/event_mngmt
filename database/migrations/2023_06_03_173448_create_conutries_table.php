@@ -13,8 +13,6 @@ return new class extends Migration
     {
         Schema::create('conutries', function (Blueprint $table) {
             $table->id();
-            $table->string('');
-            $table->string('');
             $table->boolean('status')->default(1);
 
             $table->softDeletes();
