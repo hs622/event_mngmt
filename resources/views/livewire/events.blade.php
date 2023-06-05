@@ -64,51 +64,81 @@
     {{-- Modal Form --}}
     <x-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
-            {{ __('Save Page') }} {{ $modelId }}
+            {{ __('Create New Event') }} {{ $modelId }}
         </x-slot>
 
         <x-slot name="content">
             <div class="mt-4">
                 <x-label for="title" value="{{ __('Title') }}" />
                 <x-input id="title" class="block mt-1 w-full" type="text" name="title" wire:model.defer="event.title" />
-                <x-input-error for="title" class="mt-2" />
+                <x-input-error for="event.title" class="mt-2" />
             </div>
             <div class="mt-4">
-                <x-label for="country" value="{{ __('Country') }}" />
-                <select class="px-4 py-3 rounded-full" wire:model.defer="event.country">
-                    @foreach($countries as $country)
-                        <option value="{{ $country->id }}" wire:key="$country->id" >{{ $country->name }}</option>
-                    @endforeach
-                </select>
-                <x-input-error for="country" class="mt-2" />
+                <div class="flex flex-row">
+                    <div class="mr-1 w-full">
+                        <x-label for="country" value="{{ __('Country') }}" />
+                        <select id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="selectedCountry">
+                            @if($countries)
+                                <option>-- Select the country --</option>
+                                @foreach($countries as $country)
+                                    <option value="{{ $country->id }}" wire:key="$country->id" >{{ $country->name }}</option>
+                                @endforeach
+                            @else
+                                <option>-- Select the country --</option>
+                            @endif
+                        </select>                
+                        <x-input-error for="event.country" class="mt-2" />
+                    </div>
+                    
+                    <div class="ml-1 w-full">
+                        <x-label for="city" value="{{ __('City') }}" />
+                        <select id="city" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="event.city">
+                            @if($cities)
+                                <option>-- Select the city --</option>
+                                @foreach($cities as $key => $cities)
+                                    <option value="{{ $key }}" wire:key="$key" >{{ $cities }}</option>
+                                @endforeach
+                            @else
+                                <option>-- Select the city --</option>
+                            @endif
+                        </select>                
+                        <x-input-error for="event.city" class="mt-2" />
+                    </div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <x-label for="venue" value="{{ __('Venue') }}" />
+                <x-input id="venue" class="block mt-1 w-full" type="text" name="venue" wire:model.defer="event.venue" />
+                <x-input-error for="event.venue" class="mt-2" />
             </div>
             <div class="mt-4">
                 <x-label for="description" value="{{ __('Event Description') }}" />
-                <div class="rounded-md shadow-sm">
-                    <div class="mt-1 bg-white">
-                        <div class="body-content" wire:ignore>
-                            <x-textarea id="description" wire:model.defer="event.description"></x-textarea>
-                        </div>
-                    </div>
-                </div>
-                <x-input-error for="description" class="mt-2" />
+                <x-textarea class="w-full" id="description" wire:model.defer="event.description" />
+                <x-input-error for="event.description" class="mt-2" />
+            </div>
+            <div class="mt-4 flex">
+                <input id="checkbox" wire:model.defer="event.status" name="checkbox" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                <label for="checkbox" class="ml-2 block text-sm text-gray-900">Published</label>                
+                <x-input-error for="event.status" class="mt-2" />
             </div>
         </x-slot>
 
         <x-slot name="footer">
-            <x-secondary-button wire:click="$toggle('modalFormVisible')" wire:loading.attr="disabled">
-                {{ __('Cancel') }}
-            </x-secondary-button>
-
-            @if ($modelId)
-                <x-button class="ml-3" wire:click="update" wire:loading.attr="disabled">
-                    {{ __('Update') }}
-                </x-button>
-            @else
-                <x-button class="ml-3" wire:click="create" wire:loading.attr="disabled">
-                    {{ __('Create') }}
-                </x-button>
-            @endif
+            <div class="items-center">
+                <x-secondary-button wire:click="$toggle('modalFormVisible')" wire:loading.attr="disabled">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+    
+                @if ($modelId)
+                    <x-button class="ml-3" wire:click="update" wire:loading.attr="disabled">
+                        {{ __('Update') }}
+                    </x-button>
+                @else
+                    <x-button class="ml-3" wire:click="store" wire:loading.attr="disabled">
+                        {{ __('Create') }}
+                    </x-button>
+                @endif
+            </div>
         </x-slot>
     </x-dialog-modal>
 </div>
