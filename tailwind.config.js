@@ -16,6 +16,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            padding: {
+                'p-4': '1rem',
+            }
         },
     },
 

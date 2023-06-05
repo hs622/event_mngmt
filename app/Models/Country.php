@@ -2,23 +2,22 @@
 
 namespace App\Models;
 
-use App\Models\Country;
+use App\Models\City;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class City extends Model
+class Country extends Model
 {
     use SoftDeletes, HasFactory;
-    
+
     protected $fillabel = [
-        'country_id',
         'name',
         'slug',
         'status'
     ];
 
-    public function country() {
-        return $this->belongsTo(Country::class, 'country_id', 'id');
+    public function city() {
+        return $this->hasMany(City::class, 'country_id', 'id');
     }
 }

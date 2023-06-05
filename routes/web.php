@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Livewire\Events;
+use App\Http\Livewire\Roles;
+use App\Http\Livewire\Users;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,17 +17,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () { return view('welcome'); });
-
-
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
+Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified' ])->group(function () {
     Route::get('/dashboard', function () { return view('dashboard'); })->name('dashboard');
 
-    // Route::get('/users', ShowPosts::class)->name('users');
-    // Route::get('/user/{user}', ShowPosts::class)->name('users');
+    Route::get('/users', Users::class)->name('user');
+    Route::get('/user/{user}', Users::class)->name('users');
+    
+    Route::get('/roles', Roles::class)->name('role');
+    Route::get('/role/create', Roles::class)->name('role.create');
+    
+    Route::get('/events', Events::class)->name('event');
 
     // Route::get('/events', ShowPosts::class)->name('event');
     // Route::get('/event/{event}', ShowPosts::class)->name('event.show');

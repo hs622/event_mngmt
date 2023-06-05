@@ -209,4 +209,34 @@
             </div>
         </div>
     </div>
+    
+    <div class="border-t border-gray-100">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center h-16">
+                <div class="flex">
+                    <!-- Navigation Links -->
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link href="{{ route('user') }}" :active="request()->routeIs('user')">
+                            {{ __('User Management') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link href="{{ route('role') }}" :active="request()->routeIs('role')">
+                            {{ __('Role Management') }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link href="{{ route('event') }}" :active="request()->routeIs('event')">
+                            {{ __('Event Management') }}
+                        </x-nav-link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </nav>

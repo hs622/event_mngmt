@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('conutries', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('slug');
             $table->boolean('status')->default(1);
 
             $table->softDeletes();
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('conutries');
+        Schema::dropIfExists('countries');
     }
 };
