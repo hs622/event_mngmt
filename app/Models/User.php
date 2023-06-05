@@ -59,7 +59,7 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    public function role() {
+    public function roles() {
         return $this->belongsToMany(Role::class, 'user_roles', 'user_id', 'id');
     }
 }
