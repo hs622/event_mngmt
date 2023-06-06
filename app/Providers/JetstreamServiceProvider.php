@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Role;
+use Laravel\Fortify\Fortify;
+use Laravel\Jetstream\Jetstream;
 use App\Actions\Jetstream\DeleteUser;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Jetstream\Jetstream;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,10 @@ class JetstreamServiceProvider extends ServiceProvider
         $this->configurePermissions();
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
+        Fortify::registerView(function () {
+            $roles = Role::whereIn('id', [2, 3])->get();
+            return view('auth.register', compact('roles'));
+        });
     }
 
     /**

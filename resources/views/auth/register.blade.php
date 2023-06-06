@@ -31,7 +31,16 @@
 
             <div class="mt-4">
                 <x-label for="role" value="{{ __('Role') }}" />
-                {{-- <x-input id="role" class="block mt-1 w-full" type="text" name="password_confirmation" required autocomplete="new-password" /> --}}
+                <select id="role" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" name="role">
+                    @if($roles)
+                        <option>-- Select the role --</option>
+                        @foreach($roles as $role)
+                            <option value="{{ $role->id }}" wire:key="$role->id">{{ $role->title }}</option>
+                        @endforeach
+                    @else
+                        <option>-- Select the role --</option>
+                    @endif
+                </select>
             </div>
 
             @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())

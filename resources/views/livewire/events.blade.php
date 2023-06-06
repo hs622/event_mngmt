@@ -39,7 +39,7 @@
                                             {{ $event->schedule->venue }}, {{ $event->schedule->city->name }}, {{ $event->schedule->country->name }}
                                         </td>
                                         <td class="table-data">
-                                            {!! $event->enrollments->count() == 0 ? "No one yet enrolled" : $event->enrollments->count() !!}
+                                            {!! $event->enrollments->count() == 0 ? "No one yet enrolled" : $event->enrollments->count() ." people" !!}
                                         </td>
                                         <td class="table-data">
                                             <div class="flex gap-1">
@@ -72,8 +72,6 @@
         </div>
     </div>
 
-    <br />
-    {{-- {{ $pages->links() }} --}}
 
     {{-- Modal Form --}}
     <x-dialog-modal wire:model="modalFormVisible">
