@@ -11,6 +11,9 @@
             </div>
         </div>
         <div class="text-left mx-1">
+            <p class="m-0 text-gray-700 text-sm">Role <br> <span class="text-md"> {{ $user->roles[0]->title }} </span> </p> 
+        </div>
+        <div class="text-left mx-1">
             <p class="m-0 text-gray-700 text-sm">Account Created <br> <span class="text-md"> {{ $user->created_at }} </span> </p> 
         </div>
     </div>

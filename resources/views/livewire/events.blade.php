@@ -5,22 +5,24 @@
         </div>
     @endif
 
-    <div class="flex items-centre justify-end px-4 py-3 sm:py-6 text-right">
-        <x-button wire:click="createShowModal">
-            {{ __('Create') }}
-        </x-button>
-    </div>
+    @if(auth()->user()->roles[0]->slug == 'admin')
+        <div class="flex items-centre justify-end px-4 py-3 sm:py-6 text-right">
+            <x-button wire:click="createShowModal">
+                {{ __('Create') }}
+            </x-button>
+        </div>
+    @endif
 
     {{-- The data table --}}
 
     <div class="flex flex-col">
         <div class="my-2 overflow-x-auto sm:mx-6 lg:mx-8">
-            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+            <div class="py-2 align-middle inline-block w-full sm:px-6 lg:px-8">
                 <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                    <table class="min-w-full divide-y divide-gray-200">
+                    <table class="w-full divide-y divide-gray-200">
                         <thead>
-                            <tr>
-                                <th class="table-head">Title</th>
+                            <tr class="text-left">
+                                <th class="table-head py-4 px-4">Title</th>
                                 <th class="table-head">Venue</th>
                                 <th class="table-head"></th>
                             </tr>
@@ -30,30 +32,29 @@
                             @if ($events->count())
                                 @foreach ($events as $event)
                                     <tr>
-                                        <td class="table-data">
+                                        <td class="table-data py-4 px-4">
                                             {{ $event->title }}
                                         </td>
                                         <td class="table-data">
                                             {{ $event->schedule->venue }}, {{ $event->schedule->country->name }}, {{ $event->schedule->city->name }}
                                         </td>
                                         <td class="table-data">
-                                            {{ $event->title }}
+                                            <div class="flex gap-1">
+                                                <a class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" href="{{ route('event.show', $event->id) }}" >
+                                                    {{ __('Show Details') }}
+                                                </a>
+
+                                                @if(auth()->user()->roles[0]->slug == 'admin')
+                                                    <x-danger-button  wire:click="deleteShowModal({{ $event->id }})">
+                                                        {{ __('Delete') }}
+                                                    </x-danger-button>
+                                                @elseif(auth()->user()->roles[0]->slug == 'speaker')
+                                                    <x-button >
+                                                        {{ __('Enroll as speaker') }}
+                                                    </x-button>
+                                                @endif
+                                            </div>
                                         </td>
-                                        {{-- <td class="table-data">
-                                            <a href="{{ URL::to('/' . $page->slug) }}" target="_blank"
-                                                class="text-indigo-600 hover:text-indigo-900">
-                                                {{ $page->slug }}
-                                            </a>
-                                        </td> --}}
-                                        {{-- <td class="table-data">{!! \Illuminate\Support\Str::limit($page->content, 50, '...') !!}</td>
-                                        <td class="table-data flex justify-end gap-2">
-                                            <x-jet-button wire:click="updateShowModal({{ $page->id }})">
-                                                {{ __('Edit') }}
-                                            </x-jet-button>
-                                            <x-jet-danger-button wire:click="deleteShowModal({{ $page->id }})">
-                                                {{ __('Delete') }}
-                                                </x-jet-button>
-                                        </td> --}}
                                     </tr>
                                 @endforeach
                             @else
@@ -148,6 +149,29 @@
                         {{ __('Create') }}
                     </x-button>
                 @endif
+            </div>
+        </x-slot>
+    </x-dialog-modal>
+
+    {{-- Delete Modal --}}
+    <x-dialog-modal wire:model="deleteModal">
+        <x-slot name="title">
+            {{ __('Delete Confirmation') }}
+        </x-slot>
+
+        <x-slot name="content">
+            Are you sure you want to delete event?
+        </x-slot>
+
+        <x-slot name="footer">
+            <div class="items-center">
+                <x-secondary-button wire:click="$toggle('deleteModal')" wire:loading.attr="disabled">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+                
+                <x-danger-button class="ml-3" wire:click="deleteConfirmed" wire:loading.attr="disabled">
+                    {{ __('Delete') }}
+                </x-danger-button>
             </div>
         </x-slot>
     </x-dialog-modal>

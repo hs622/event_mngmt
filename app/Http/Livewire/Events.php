@@ -5,12 +5,15 @@ namespace App\Http\Livewire;
 use App\Models\City;
 use App\Models\Event;
 use App\Models\Country;
+use App\Models\Schedule;
 use Livewire\Component;
 use Illuminate\Support\Str;
 
 class Events extends Component
 {
     public $modalFormVisible = false;
+    public $deleteSelectedEvent;
+    public $deleteModal = false;
     public $event;
     public $modelId;
 
@@ -74,6 +77,17 @@ class Events extends Component
         $this->reset();
         $this->modalFormVisible = false;
         session()->flash('message', 'Event created successfully.');
+    }
+
+    public function deleteShowModal($eventId) {
+        $this->deleteSelectedEvent = Event::find($eventId);
+        $this->deleteModal = true;
+    }
+
+    public function deleteConfirmed() {
+        Schedule::where('event_id', $this->deleteSelectedEvent->id)->delete();
+        Event::find($this->deleteSelectedEvent->id)->delete();
+        $this->deleteModal = false;
     }
 
 }

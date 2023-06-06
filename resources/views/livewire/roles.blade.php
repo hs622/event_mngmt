@@ -1,59 +1,57 @@
+<div class="p-6">
+    @if (session()->has('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+    @endif
 
-<div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-    <x-action-section>
-        <x-slot name="title">
-            {{ __('Create new role') }}
-        </x-slot>
+    {{-- The data table --}}
 
-        <x-slot name="description">
-            {{ __('Create a new role for a user.') }}
-        </x-slot>
-        
-        <x-slot name="content">
-            <div class="max-w-xl text-sm text-gray-600">
-                {{ __('Create a new role for the user in the admin system and empower them with enhanced privileges and responsibilities.') }}
+    <div class="flex flex-col">
+        <div class="my-2 overflow-x-auto sm:mx-6 lg:mx-8">
+            <div class="py-2 align-middle inline-block w-full sm:px-6 lg:px-8">
+                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                    <table class="w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr class="">
+                                <th class="table-head py-4 px-4">Name</th>
+                                <th class="table-head">Description</th>
+                                <th class="table-head">Slug</th>
+                                <th class="table-head">Status</th>
+                                <th class="table-head">Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            
+                            @if ($roles->count())
+                                @foreach ($roles as $role)
+                                    <tr>
+                                        <td class="table-data py-4 px-4 text-center">
+                                            {{ $role->title }}
+                                        </td>
+                                        <td class="table-data text-center">
+                                            {{ $role->description }}
+                                        </td>
+                                        <td class="table-data text-center">
+                                            {{ $role->slug }}
+                                        </td>
+                                        <td class="table-data text-center">
+                                            {!! $role->status ? "Active" : "Not Active" !!}
+                                        </td>
+                                        <td class="table-data text-center">
+                                            {{ $role->created_at }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td class="table-data" colspan="4">No Results Found</td>
+                                </tr>
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
             </div>
-
-            <div class="mt-5">
-                <x-button wire:click="confirmUserDeletion" wire:loading.attr="disabled">
-                    {{ __('Create New Role') }}
-                </x-button>
-            </div>
-
-            <!-- Delete User Confirmation Modal -->
-
-            {{-- creatingNewForUser --}}
-            <x-dialog-modal wire:model="confirmingUserDeletion">
-                <x-slot name="title">
-                    {{ __('Create Role') }}
-                </x-slot>
-
-                <x-slot name="content">
-                    {{ __('Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-
-                    <div class="mt-4" x-data="{}" x-on:confirming-delete-user.window="setTimeout(() => $refs.password.focus(), 250)">
-                        <x-input type="password" class="mt-1 block w-3/4"
-                                    autocomplete="current-password"
-                                    placeholder="{{ __('Password') }}"
-                                    x-ref="password"
-                                    wire:model.defer="password"
-                                    wire:keydown.enter="deleteUser" />
-
-                        <x-input-error for="password" class="mt-2" />
-                    </div>
-                </x-slot>
-
-                <x-slot name="footer">
-                    <x-secondary-button wire:click="$toggle('confirmingUserDeletion')" wire:loading.attr="disabled">
-                        {{ __('Cancel') }}
-                    </x-secondary-button>
-
-                    <x-danger-button class="ml-3" wire:click="deleteUser" wire:loading.attr="disabled">
-                        {{ __('Delete Account') }}
-                    </x-danger-button>
-                </x-slot>
-            </x-dialog-modal>
-        </x-slot>
-
-    </x-action-section>
+        </div>
+    </div>
 </div>

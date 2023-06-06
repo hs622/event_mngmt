@@ -47,7 +47,7 @@
                                     @endcan
 
                                     <!-- Team Switcher -->
-                                    @if (Auth::user()->allTeams()->count() > 1)
+                                    {{-- @if (Auth::user()->allTeams()->count() > 1)
                                         <div class="border-t border-gray-200"></div>
 
                                         <div class="block px-4 py-2 text-xs text-gray-400">
@@ -57,7 +57,7 @@
                                         @foreach (Auth::user()->allTeams() as $team)
                                             <x-switchable-team :team="$team" />
                                         @endforeach
-                                    @endif
+                                    @endif --}}
                                 </div>
                             </x-slot>
                         </x-dropdown>
@@ -220,16 +220,20 @@
                             {{ __('Dashboard') }}
                         </x-nav-link>
                     </div>
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link href="{{ route('user') }}" :active="request()->routeIs('user')">
-                            {{ __('User Management') }}
-                        </x-nav-link>
-                    </div>
-                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link href="{{ route('role') }}" :active="request()->routeIs('role')">
-                            {{ __('Role Management') }}
-                        </x-nav-link>
-                    </div>
+
+                    @if(auth()->user()->roles[0]->slug == 'admin')
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link href="{{ route('user') }}" :active="request()->routeIs('user')">
+                                {{ __('User Management') }}
+                            </x-nav-link>
+                        </div>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link href="{{ route('role') }}" :active="request()->routeIs('role')">
+                                {{ __('Role Management') }}
+                            </x-nav-link>
+                        </div>
+                    @endif
+                    
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link href="{{ route('event') }}" :active="request()->routeIs('event')">
                             {{ __('Event Management') }}

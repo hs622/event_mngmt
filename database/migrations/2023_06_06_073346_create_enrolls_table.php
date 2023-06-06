@@ -11,13 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('events', function (Blueprint $table) {
+        Schema::create('enrolls', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('icon')->nullable();
-            $table->string('slug');
-            $table->longText('description');
-            $table->boolean('status')->default(0);
+            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('user_id');
 
             $table->softDeletes();
             $table->timestamps();
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('events');
+        Schema::dropIfExists('enrolls');
     }
 };

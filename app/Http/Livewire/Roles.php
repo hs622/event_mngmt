@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Role;
 use Livewire\Component;
 
 class Roles extends Component
@@ -12,6 +13,8 @@ class Roles extends Component
 
     public function render()
     {
-        return view('livewire.roles');
+        return view('livewire.roles', [
+            'roles' => Role::all()
+        ]);
     }
 }

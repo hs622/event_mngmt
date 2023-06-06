@@ -1,13 +1,29 @@
 <div class="bg-gray-200 bg-opacity-25 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 p-6 lg:p-8">
-    <div>
-        <div class="flex items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="w-6 h-6 stroke-gray-400">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-            </svg>
-            <h2 class="ml-3 text-xl font-semibold text-gray-900">
-                <a href="https://laravel.com/docs">Documentation</a>
-            </h2>
-        </div>
+    <div class="">            
+        <h2 class="text-xl font-semibold text-gray-900">
+            Event Management
+        </h2>
+        <p>Event management refers to the process of planning, organizing, and executing various types of events, such as conferences, trade shows, weddings, parties, corporate meetings, and sports tournaments. It involves coordinating and overseeing all the necessary elements to ensure the smooth and successful execution of an event.</p>
+    </div>
+    <div class="">            
+        <h2 class="text-xl font-semibold text-gray-900">
+            Roles
+        </h2>
+        <p>Roles in event management include the event manager who oversees the entire process, the event coordinator who assists with planning and execution, the marketing specialist who promotes the event, the venue coordinator who handles the venue logistics, the registration manager who manages attendee registration, the logistics manager who handles transportation.</p>
+    </div>
+    <div class="">            
+        <h2 class="text-xl font-semibold text-gray-900">
+            Events
+        </h2>
+        <p>Events are organized gatherings that bring people together for a specific purpose or celebration. They can be of various types, such as conferences, weddings, parties, or trade shows. Event management involves planning, organizing, and executing these events, including tasks like budgeting, logistics, marketing, registration, and on-site management.</p>
+    </div>
+    <div class="">            
+        <h2 class="text-xl font-semibold text-gray-900">
+            User Management
+        </h2>
+        User management refers to the processes and activities involved in controlling and organizing user access to a system or platform. It includes tasks such as creating and deleting user accounts, assigning roles and permissions, managing passwords, and ensuring the security and integrity of user data. Effective user management is essential for maintaining system security and controlling user privileges.</p>
+    </div>
+    {{-- <div>
 
         <p class="mt-4 text-gray-500 text-sm leading-relaxed">
             Laravel has wonderful documentation covering every aspect of the framework. Whether you're new to the framework or have previous experience, we recommend reading all of the documentation from beginning to end.
@@ -77,5 +93,5 @@
         <p class="mt-4 text-gray-500 text-sm leading-relaxed">
             Authentication and registration views are included with Laravel Jetstream, as well as support for user email verification and resetting forgotten passwords. So, you're free to get started with what matters most: building your application.
         </p>
-    </div>
+    </div> --}}
 </div>
