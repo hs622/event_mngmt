@@ -5,6 +5,7 @@ use App\Http\Livewire\Roles;
 use App\Http\Livewire\Users;
 use App\Http\Livewire\Events;
 use App\Http\Livewire\ShowEvent;
+use App\Http\Livewire\Enrollment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,8 +33,9 @@ Route::middleware([ 'auth:sanctum', config('jetstream.auth_session'), 'verified'
         Route::get('/roles', Roles::class)->name('role');
         Route::get('/role/create', Roles::class)->name('role.create');
     });
-    
+
     Route::get('/events', Events::class)->name('event');
+    Route::get('/event/enrollment', Enrollment::class)->name('event.enrollment');
     Route::get('/event/{eventId}', ShowEvent::class)->name('event.show');
 
     // Route::get('/events', ShowPosts::class)->name('event');

@@ -14,7 +14,6 @@
     @endif
 
     {{-- The data table --}}
-
     <div class="flex flex-col">
         <div class="my-2 overflow-x-auto sm:mx-6 lg:mx-8">
             <div class="py-2 align-middle inline-block w-full sm:px-6 lg:px-8">
@@ -24,6 +23,7 @@
                             <tr class="text-left">
                                 <th class="table-head py-4 px-4">Title</th>
                                 <th class="table-head">Venue</th>
+                                <th class="table-head">Enrollment</th>
                                 <th class="table-head"></th>
                             </tr>
                         </thead>
@@ -36,7 +36,10 @@
                                             {{ $event->title }}
                                         </td>
                                         <td class="table-data">
-                                            {{ $event->schedule->venue }}, {{ $event->schedule->country->name }}, {{ $event->schedule->city->name }}
+                                            {{ $event->schedule->venue }}, {{ $event->schedule->city->name }}, {{ $event->schedule->country->name }}
+                                        </td>
+                                        <td class="table-data">
+                                            {!! $event->enrollments->count() == 0 ? "No one yet enrolled" : $event->enrollments->count() !!}
                                         </td>
                                         <td class="table-data">
                                             <div class="flex gap-1">
@@ -49,7 +52,7 @@
                                                         {{ __('Delete') }}
                                                     </x-danger-button>
                                                 @elseif(auth()->user()->roles[0]->slug == 'speaker')
-                                                    <x-button >
+                                                    <x-button  wire:click="enrolledInEvent({{ $event->id }})">
                                                         {{ __('Enroll as speaker') }}
                                                     </x-button>
                                                 @endif
@@ -59,7 +62,7 @@
                                 @endforeach
                             @else
                                 <tr>
-                                    <td class="table-data" colspan="4">No Results Found</td>
+                                    <td class="text-center table-data py-4 px-4" colspan="4">No Results Found</td>
                                 </tr>
                             @endif
                         </tbody>
@@ -175,4 +178,28 @@
             </div>
         </x-slot>
     </x-dialog-modal>
+
+    {{-- Congurats Model --}}
+    <x-dialog-modal wire:model="enrolledModal">
+        <x-slot name="title">
+            {{ __('Congrats !') }}
+        </x-slot>
+
+        <x-slot name="content">
+            <strong>{{ auth()->user()->name }}</strong>, you are now enrolled in this event. what to see details? 
+        </x-slot>
+
+        <x-slot name="footer">
+            <div class="items-center">
+                <x-secondary-button wire:click="$toggle('enrolledModal')" wire:loading.attr="disabled">
+                    {{ __('Cancel') }}
+                </x-secondary-button>
+                
+                <x-button class="ml-3" wire:click="deleteConfirmed" wire:loading.attr="disabled">
+                    {{ __('See Detail') }}
+                </x-button>
+            </div>
+        </x-slot>
+    </x-dialog-modal>
+
 </div>

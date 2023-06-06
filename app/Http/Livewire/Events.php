@@ -5,6 +5,7 @@ namespace App\Http\Livewire;
 use App\Models\City;
 use App\Models\Event;
 use App\Models\Country;
+use App\Models\Enroll;
 use App\Models\Schedule;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -12,8 +13,10 @@ use Illuminate\Support\Str;
 class Events extends Component
 {
     public $modalFormVisible = false;
-    public $deleteSelectedEvent;
+    public $enrolledModal = false;
     public $deleteModal = false;
+
+    public $deleteSelectedEvent;
     public $event;
     public $modelId;
 
@@ -23,7 +26,7 @@ class Events extends Component
     public function render()
     {
         return view('livewire.events', [
-            'events'    => Event::all(),
+            'events'    => Event::whereNotIn('id', auth()->user()->events->pluck('event_id'))->get(),
             'countries' => Country::where('status', 1)->get(),
             'cities' => $this->cities,
         ]);
@@ -90,4 +93,17 @@ class Events extends Component
         $this->deleteModal = false;
     }
 
+    public function enrolledInEvent(int $eventId) {
+        
+        // dd($eventId, auth()->user()->events);
+        // if(in_array($eventId, auth()->user()->events->pluck('event_id'))) {
+        // } else {
+            Enroll::create([
+                'user_id'   => auth()->user()->id,
+                'event_id'  => $eventId,
+            ]);
+            
+            $this->enrolledModal = true;
+        // }
+    }
 }

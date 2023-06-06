@@ -19,4 +19,8 @@ class Event extends Model
     public function schedule() {
         return $this->hasOne(Schedule::class, 'event_id', 'id');
     }
+
+    public function enrollments() {
+        return $this->hasMany(Enroll::class, 'event_id', 'id');
+    }
 }

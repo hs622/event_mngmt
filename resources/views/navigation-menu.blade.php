@@ -233,12 +233,20 @@
                             </x-nav-link>
                         </div>
                     @endif
-                    
+
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         <x-nav-link href="{{ route('event') }}" :active="request()->routeIs('event')">
                             {{ __('Event Management') }}
                         </x-nav-link>
                     </div>
+
+                    @if(auth()->user()->roles[0]->slug != 'admin')
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link href="{{ route('event.enrollment') }}" :active="request()->routeIs('event.enrollment')">
+                                {{ __('My Events') }}
+                            </x-nav-link>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
