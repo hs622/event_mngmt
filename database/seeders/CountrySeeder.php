@@ -16,23 +16,23 @@ class CountrySeeder extends Seeder
     {
         $roles = [
             [
-                'name'         => 'Pakistan',
+                'name'          => 'Pakistan',
                 'status'        => 1
             ],
             [
-                'title'         => 'India',
+                'name'          => 'India',
                 'status'        => 1
             ],
             [
-                'title'         => 'Singapore',
+                'name'          => 'Singapore',
                 'status'        => 1
             ],
         ];
 
         foreach($roles as $role) {
             Country::create([
-                'name' => $role['title'],
-                'slug' => Str::slug($role['title']),
+                'name' => $role['name'],
+                'slug' => Str::slug($role['name']),
                 'status' => $role['status']
             ]);
         }

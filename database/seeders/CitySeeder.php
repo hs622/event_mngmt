@@ -55,14 +55,34 @@ class CitySeeder extends Seeder
                 'name'          => 'Hyderabad',
                 'status'        => 1
             ],
+            [
+                'country_id'    => 3,
+                'name'          => 'Bukit Batok',
+                'status'        => 1
+            ],
+            [
+                'country_id'    => 3,
+                'name'          => 'Yishun',
+                'status'        => 1
+            ],
+            [
+                'country_id'    => 3,
+                'name'          => 'Jurong West',
+                'status'        => 1
+            ],
+            [
+                'country_id'    => 3,
+                'name'          => 'West Region',
+                'status'        => 1
+            ],
             
         ];
 
         foreach($roles as $role) {
             City::create([
                 'country_id'    => $role['country_id'],
-                'name'          => $role['title'],
-                'slug'          => Str::slug($role['title']),
+                'name'          => $role['name'],
+                'slug'          => Str::slug($role['name']),
                 'status'        => $role['status']
             ]);
         }
