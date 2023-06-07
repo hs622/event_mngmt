@@ -9,9 +9,9 @@ class ShowEvent extends Component
 {
     public $event;
 
-    public function mount(Int $eventId)
+    public function mount(String $eventSlug)
     {
-        $this->event = Event::find($eventId);
+        $this->event = Event::where('slug', $eventSlug)->first();
     }
 
     public function render()

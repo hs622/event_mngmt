@@ -34,15 +34,23 @@ class Events extends Component
 
     protected $rules = [
         'event' => 'required|array',
-        'event.title' => 'required|min:5',
-        'event.venue' => 'required|min:10',
+        'event.title' => 'required|string',
+        'event.venue' => 'required|string',
         'event.description' => 'required|min:15',
         'selectedCountry' => 'required|integer',
         'event.city' => 'required|integer',
+        'event.startAt' => 'required|date|after:today',
+        'event.endAt' => 'required|date|after:event.startAt',
     ];
 
     protected $messages = [
-        'event.title' => 'Please insert title which must have 5 charater',
+        'event.title' => 'Enter the title of your event.',
+        'selectedCountry' => 'In which country event is to be held?',
+        'event.city' => 'In which city event is to be held?',
+        'event.venue' => 'Enter the name of the place.',
+        'event.description' => 'Please describe about the event.',
+        'event.startAt.after' => 'The start date must be a date after today.',
+        'event.endAt.after' => 'The start end must be a date after start.'
     ];
 
     public function createShowModal() {
@@ -60,6 +68,7 @@ class Events extends Component
 
     public function store() {
         $this->validate();
+        dd($this->event);
 
         $event = Event::create([
             'title'         => $this->event['title'],

@@ -237,6 +237,11 @@
                                 {{ __('Event Management') }}
                             </x-nav-link>
                         </div>
+                        <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                            <x-nav-link href="{{ route('setting.home') }}" :active="request()->routeIs('setting.home')">
+                                {{ __('General Setting') }}
+                            </x-nav-link>
+                        </div>
                     @endif                    
 
                     @if(auth()->user()->roles[0]->slug != 'admin')

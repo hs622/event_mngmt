@@ -43,7 +43,7 @@
                                         </td>
                                         <td class="table-data">
                                             <div class="flex gap-1">
-                                                <a class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" href="{{ route('event.show', $event->id) }}" >
+                                                <a class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150" href="{{ route('event.show', $event->slug) }}" >
                                                     {{ __('Show Details') }}
                                                 </a>
 
@@ -91,7 +91,7 @@
                         <x-label for="country" value="{{ __('Country') }}" />
                         <select id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="selectedCountry">
                             @if($countries)
-                                <option>-- Select the country --</option>
+                                <option selected value="">-- Select the country --</option>
                                 @foreach($countries as $country)
                                     <option value="{{ $country->id }}" wire:key="$country->id" >{{ $country->name }}</option>
                                 @endforeach
@@ -100,13 +100,12 @@
                             @endif
                         </select>                
                         <x-input-error for="selectedCountry" class="mt-2" />
-                    </div>
-                    
+                    </div>                    
                     <div class="ml-1 w-full">
                         <x-label for="city" value="{{ __('City') }}" />
                         <select id="city" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="event.city">
                             @if($cities)
-                                <option>-- Select the city --</option>
+                                <option selected value="">-- Select the city --</option>
                                 @foreach($cities as $key => $cities)
                                     <option value="{{ $key }}" wire:key="$key" >{{ $cities }}</option>
                                 @endforeach
@@ -122,6 +121,21 @@
                 <x-label for="venue" value="{{ __('Venue') }}" />
                 <x-input id="venue" class="block mt-1 w-full" type="text" wire:model.defer="event.venue" />
                 <x-input-error for="event.venue" class="mt-2" />
+            </div>
+            <div class="mt-4">
+                <div class="flex flex-row">
+                    <div class="mr-1 w-full">
+                        <x-label for="startAt" value="{{ __('Start Datetime') }}" />
+                        <x-input id="startAt"  type="datetime-local" class="block mt-1 w-full" wire:model.defer="event.startAt" />       
+                        <x-input-error for="event.startAt" class="mt-2" />
+                    </div>
+                    
+                    <div class="ml-1 w-full">
+                        <x-label for="endAt" value="{{ __('End Datetime') }}" />
+                        <x-input type="datetime-local" class="block mt-1 w-full" wire:model.defer="event.endAt" />      
+                        <x-input-error for="event.endAt" class="mt-2" />
+                    </div>
+                </div>
             </div>
             <div class="mt-4">
                 <x-label for="description" value="{{ __('Event Description') }}" />
