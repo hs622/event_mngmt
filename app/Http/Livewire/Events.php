@@ -4,11 +4,12 @@ namespace App\Http\Livewire;
 
 use App\Models\City;
 use App\Models\Event;
-use App\Models\Country;
 use App\Models\Enroll;
-use App\Models\Schedule;
+use App\Models\Country;
 use Livewire\Component;
+use App\Models\Schedule;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class Events extends Component
 {
@@ -17,11 +18,21 @@ class Events extends Component
     public $deleteModal = false;
 
     public $deleteSelectedEvent;
-    public $event;
-    public $modelId;
-
-    public $selectedCountry;
-    public $cities;
+    public $eventId;
+    public $cities = [];
+    public $event = [
+        'title' => '',
+        'slug' => '',
+        'description'   => '',
+        'status'   => '',
+        'schedule' => [
+            'country_id' => '',
+            'city_id' => '',
+            'venue' => '',
+            'start_at'  => '',
+            'end_at'  => ''
+        ]
+    ];
     
     public function render()
     {
@@ -35,22 +46,22 @@ class Events extends Component
     protected $rules = [
         'event' => 'required|array',
         'event.title' => 'required|string',
-        'event.venue' => 'required|string',
         'event.description' => 'required|min:15',
-        'selectedCountry' => 'required|integer',
-        'event.city' => 'required|integer',
-        'event.startAt' => 'required|date|after:today',
-        'event.endAt' => 'required|date|after:event.startAt',
+        'event.schedule.country_id' => 'required|integer',
+        'event.schedule.city_id' => 'required|integer',
+        'event.schedule.venue' => 'required|string',
+        'event.schedule.start_at' => 'required|date|after:today',
+        'event.schedule.end_at' => 'required|date|after:event.startAt',
     ];
 
     protected $messages = [
         'event.title' => 'Enter the title of your event.',
-        'selectedCountry' => 'In which country event is to be held?',
-        'event.city' => 'In which city event is to be held?',
-        'event.venue' => 'Enter the name of the place.',
         'event.description' => 'Please describe about the event.',
-        'event.startAt.after' => 'The start date must be a date after today.',
-        'event.endAt.after' => 'The start end must be a date after start.'
+        'event.schedule.country_id' => 'In which country event is to be held?',
+        'event.schedule.city_id' => 'In which city event is to be held?',
+        'event.schedule.venue' => 'Enter the name of the place.',
+        'event.schedule.start_at.after' => 'The start date must be a date after today.',
+        'event.schedule.end_at.after' => 'The start end must be a date after start.'
     ];
 
     public function createShowModal() {
@@ -59,7 +70,16 @@ class Events extends Component
         $this->modalFormVisible = true;
     }
 
-    public function updatedSelectedCountry(int $countryId) {
+    public function updateShowModal(Int $id) {
+        $this->eventId = $id;
+        $this->event = Event::where('id', $id)->with('schedule')->first()->toArray();
+        $this->cities = City::where('country_id', $this->event['schedule']['country_id'])
+            ->get()
+            ->pluck('name', 'id');
+        $this->modalFormVisible = true;
+    }
+
+    public function updatedEventScheduleCountryId(int $countryId) {
         $this->cities = City::where('status', 1)
             ->where('country_id', $countryId)
             ->get()
@@ -68,7 +88,6 @@ class Events extends Component
 
     public function store() {
         $this->validate();
-        dd($this->event);
 
         $event = Event::create([
             'title'         => $this->event['title'],
@@ -77,18 +96,32 @@ class Events extends Component
             'status'        => $this->event['status'] ? 1 : 0
         ]);
 
-        $event->schedule()->create([
-            'event_id' => $event->id,
-            'venue' => $this->event['venue'],
-            'country_id' => $this->selectedCountry,
-            'city_id' => $this->event['city'],
-            'start_ed' => now(),
-            'end_ed' => now(),
-        ]);
+        $event->schedule()->create($this->event['schedule']);
 
         $this->reset();
         $this->modalFormVisible = false;
         session()->flash('message', 'Event created successfully.');
+    }
+
+    public function update() {
+        $this->validate();
+
+        $event = Event::find($this->event['id']);
+        $eventUpdated = $event->update([
+            'title'         => $this->event['title'],
+            'slug'          => Str::slug($this->event['title']) ,
+            'description'   => $this->event['description'],
+            'status'        => $this->event['status'] ? 1 : 0
+        ]);
+
+        unset($this->event['schedule']['created_at']);
+        unset($this->event['schedule']['updated_at']);
+        unset($this->event['schedule']['deleted_at']);
+
+        $scheduleUpdated = $event->schedule()->update($this->event['schedule']);
+        $this->reset();
+        $this->modalFormVisible = false;
+        session()->flash('message', 'Event updated successfully.');
     }
 
     public function deleteShowModal($eventId) {
@@ -103,16 +136,10 @@ class Events extends Component
     }
 
     public function enrolledInEvent(int $eventId) {
-        
-        // dd($eventId, auth()->user()->events);
-        // if(in_array($eventId, auth()->user()->events->pluck('event_id'))) {
-        // } else {
-            Enroll::create([
-                'user_id'   => auth()->user()->id,
-                'event_id'  => $eventId,
-            ]);
-            
-            $this->enrolledModal = true;
-        // }
+        Enroll::create([
+            'user_id'   => auth()->user()->id,
+            'event_id'  => $eventId,
+        ]);    
+        $this->enrolledModal = true;
     }
 }

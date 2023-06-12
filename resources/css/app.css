@@ -4,13 +4,17 @@
 
 @layer base {
     /* In addition to max width scale */
-    max-w-8xl {
+    .max-w-8xl {
         max-width: 90rem;
     }
 
     /* In addition to padding scale */
-    p-4 {
+    .p-4 {
         padding: '1rem';
+    }
+
+    .w-32 {
+        width: 8rem;
     }
 }
 

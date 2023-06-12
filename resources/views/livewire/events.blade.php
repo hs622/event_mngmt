@@ -48,6 +48,9 @@
                                                 </a>
 
                                                 @if(auth()->user()->roles[0]->slug == 'admin')
+                                                    <x-button  wire:click="updateShowModal({{ $event->id }})">
+                                                        {{ __('Edit') }}
+                                                    </x-button>
                                                     <x-danger-button  wire:click="deleteShowModal({{ $event->id }})">
                                                         {{ __('Delete') }}
                                                     </x-danger-button>
@@ -76,7 +79,7 @@
     {{-- Modal Form --}}
     <x-dialog-modal wire:model="modalFormVisible">
         <x-slot name="title">
-            {{ __('Create New Event') }} {{ $modelId }}
+            {{ __('Create New Event') }} {{ $eventId }}
         </x-slot>
 
         <x-slot name="content">
@@ -89,7 +92,7 @@
                 <div class="flex flex-row">
                     <div class="mr-1 w-full">
                         <x-label for="country" value="{{ __('Country') }}" />
-                        <select id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="selectedCountry">
+                        <select id="country" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="event.schedule.country_id">
                             @if($countries)
                                 <option selected value="">-- Select the country --</option>
                                 @foreach($countries as $country)
@@ -99,11 +102,11 @@
                                 <option>-- Select the country --</option>
                             @endif
                         </select>                
-                        <x-input-error for="selectedCountry" class="mt-2" />
+                        <x-input-error for="event.schedule.country_id" class="mt-2" />
                     </div>                    
                     <div class="ml-1 w-full">
                         <x-label for="city" value="{{ __('City') }}" />
-                        <select id="city" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="event.city">
+                        <select id="city" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="event.schedule.city_id">
                             @if($cities)
                                 <option selected value="">-- Select the city --</option>
                                 @foreach($cities as $key => $cities)
@@ -113,33 +116,34 @@
                                 <option>-- Select the city --</option>
                             @endif
                         </select>                
-                        <x-input-error for="event.city" class="mt-2" />
+                        <x-input-error for="event.schedule.city_id" class="mt-2" />
                     </div>
                 </div>
             </div>
             <div class="mt-4">
                 <x-label for="venue" value="{{ __('Venue') }}" />
-                <x-input id="venue" class="block mt-1 w-full" type="text" wire:model.defer="event.venue" />
+                {{-- @dump($event->schedule->venue) --}}
+                <x-input id="venue" class="block mt-1 w-full" type="text" wire:model.defer="event.schedule.venue" />
                 <x-input-error for="event.venue" class="mt-2" />
             </div>
             <div class="mt-4">
                 <div class="flex flex-row">
                     <div class="mr-1 w-full">
                         <x-label for="startAt" value="{{ __('Start Datetime') }}" />
-                        <x-input id="startAt"  type="datetime-local" class="block mt-1 w-full" wire:model.defer="event.startAt" />       
-                        <x-input-error for="event.startAt" class="mt-2" />
+                        <x-input id="startAt"  type="datetime-local" class="block mt-1 w-full" wire:model.defer="event.schedule.start_at" />       
+                        <x-input-error for="event.schedule.start_at" class="mt-2" />
                     </div>
                     
                     <div class="ml-1 w-full">
                         <x-label for="endAt" value="{{ __('End Datetime') }}" />
-                        <x-input type="datetime-local" class="block mt-1 w-full" wire:model.defer="event.endAt" />      
-                        <x-input-error for="event.endAt" class="mt-2" />
+                        <x-input type="datetime-local" class="block mt-1 w-full" wire:model.defer="event.schedule.end_at" />      
+                        <x-input-error for="event.schedule.end_at" class="mt-2" />
                     </div>
                 </div>
             </div>
             <div class="mt-4">
                 <x-label for="description" value="{{ __('Event Description') }}" />
-                <x-textarea class="w-full" id="description" wire:model.defer="event.description" />
+                <x-textarea class="w-full" id="description" wire:model.defer="event.description" ></x-textarea>
                 <x-input-error for="event.description" class="mt-2" />
             </div>
             <div class="mt-4 flex">
@@ -155,7 +159,7 @@
                     {{ __('Cancel') }}
                 </x-secondary-button>
     
-                @if ($modelId)
+                @if ($eventId)
                     <x-button class="ml-3" wire:click="update" wire:loading.attr="disabled">
                         {{ __('Update') }}
                     </x-button>

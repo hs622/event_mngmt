@@ -7,7 +7,7 @@
                         <x-table-row :user="$user" wire:key="$user->id"/>
                     @endforeach
                 @else
-                        
+                    {{-- <x-table-row /> --}}
                 @endif
             </x-table>
         </div>

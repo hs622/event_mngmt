@@ -39,7 +39,7 @@
                                             {!! $role->status ? "Active" : "Not Active" !!}
                                         </td>
                                         <td class="table-data text-center">
-                                            {{ $role->created_at }}
+                                            {{ $role->created_at->format('y M Y') }}
                                         </td>
                                     </tr>
                                 @endforeach
