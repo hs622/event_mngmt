@@ -7,9 +7,9 @@ use App\Models\Event;
 use App\Models\Enroll;
 use App\Models\Country;
 use Livewire\Component;
+use App\Models\Category;
 use App\Models\Schedule;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\DB;
 
 class Events extends Component
 {
@@ -18,9 +18,10 @@ class Events extends Component
     public $deleteModal = false;
 
     public $deleteSelectedEvent;
-    public $eventId;
     public $cities = [];
+    public $eventId;
     public $event = [
+        'category_id'   => '',
         'title' => '',
         'slug' => '',
         'description'   => '',
@@ -39,6 +40,7 @@ class Events extends Component
         return view('livewire.events', [
             'events'    => Event::whereNotIn('id', auth()->user()->events->pluck('event_id'))->get(),
             'countries' => Country::where('status', 1)->get(),
+            'categories' => Category::where('status', 1)->get(),
             'cities' => $this->cities,
         ]);
     }
@@ -46,6 +48,7 @@ class Events extends Component
     protected $rules = [
         'event' => 'required|array',
         'event.title' => 'required|string',
+        'event.category_id' => 'required|integer',
         'event.description' => 'required|min:15',
         'event.schedule.country_id' => 'required|integer',
         'event.schedule.city_id' => 'required|integer',
@@ -56,6 +59,7 @@ class Events extends Component
 
     protected $messages = [
         'event.title' => 'Enter the title of your event.',
+        'event.category_id' => 'Select the Event type.',
         'event.description' => 'Please describe about the event.',
         'event.schedule.country_id' => 'In which country event is to be held?',
         'event.schedule.city_id' => 'In which city event is to be held?',
@@ -90,6 +94,7 @@ class Events extends Component
         $this->validate();
 
         $event = Event::create([
+            'category_id'   => $this->event['category_id'],
             'title'         => $this->event['title'],
             'slug'          => Str::slug($this->event['title']) ,
             'description'   => $this->event['description'],
@@ -108,6 +113,7 @@ class Events extends Component
 
         $event = Event::find($this->event['id']);
         $eventUpdated = $event->update([
+            'category_id'   => $this->event['category_id'],
             'title'         => $this->event['title'],
             'slug'          => Str::slug($this->event['title']) ,
             'description'   => $this->event['description'],

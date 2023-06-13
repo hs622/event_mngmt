@@ -140,3 +140,17 @@ SELECT * FROM `users` WHERE `deleted_at` IS NULL;
 -- fetching specfiy users from database;
 -- ------------------------------------
 SELECT * FROM `users` WHERE `deleted_at` IS NULL;
+
+SELECT * FROM users;
+
+SELECT * FROM users where id = ?;
+
+SELECT name, email FROM users where id = ?;
+
+SELECT * FROM users WHERE	`email_verified_at` IS NULL;
+
+INSERT INTO users(name, email, password, created_at, updated_at) VALUES(?,	?,	?,	?,	?);
+
+UPDATE users SET deleted_at = ? WHERE id = ?;
+
+DELETE FROM users WHERE id = ?;

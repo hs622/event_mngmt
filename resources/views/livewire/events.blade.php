@@ -47,16 +47,17 @@
                                                     {{ __('Show Details') }}
                                                 </a>
 
-                                                @if(auth()->user()->roles[0]->slug == 'admin')
+                                                @if(auth()->user()->roles->first()->slug == 'admin')
                                                     <x-button  wire:click="updateShowModal({{ $event->id }})">
                                                         {{ __('Edit') }}
                                                     </x-button>
                                                     <x-danger-button  wire:click="deleteShowModal({{ $event->id }})">
                                                         {{ __('Delete') }}
                                                     </x-danger-button>
-                                                @elseif(auth()->user()->roles[0]->slug == 'speaker')
-                                                    <x-button  wire:click="enrolledInEvent({{ $event->id }})">
-                                                        {{ __('Enroll as speaker') }}
+                                                @elseif(auth()->user()->roles->first()->slug == 'speaker' 
+                                                    || auth()->user()->roles->first()->slug == 'participant')
+                                                    <x-button wire:click="enrolledInEvent({{ $event->id }})">
+                                                        {{ __('Enroll') }}
                                                     </x-button>
                                                 @endif
                                             </div>
@@ -88,6 +89,20 @@
                 <x-input id="title" class="block mt-1 w-full" type="text" wire:model.defer="event.title" />
                 <x-input-error for="event.title" class="mt-2" />
             </div>
+            <div class="mt-4 w-full">
+                <x-label for="category" value="{{ __('Category') }}" />
+                <select id="category" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" wire:model="event.category_id">
+                    @if($categories)
+                        <option selected value="">-- Select the event category --</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}" wire:key="$category->id" >{{ $category->title }}</option>
+                        @endforeach
+                    @else
+                        <option>-- Select the event category --</option>
+                    @endif
+                </select>                
+                <x-input-error for="event.category_id" class="mt-2" />
+            </div> 
             <div class="mt-4">
                 <div class="flex flex-row">
                     <div class="mr-1 w-full">

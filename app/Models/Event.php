@@ -10,6 +10,7 @@ class Event extends Model
     use HasFactory;
 
     protected $fillable = [
+        'category_id',
         'title',
         'slug',
         'description',
@@ -18,6 +19,10 @@ class Event extends Model
 
     public function schedule() {
         return $this->hasOne(Schedule::class, 'event_id', 'id');
+    }
+
+    public function category() {
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
 
     public function enrollments() {
